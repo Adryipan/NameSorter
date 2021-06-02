@@ -30,55 +30,28 @@ namespace NameSorter
                 return 1;
             }
 
-            //Setup the host for the app
-            var host = CreateHostBuilder().Build();
-            
+            // Setup dependencies
+            var serviceProvider = new ServiceCollection()
+                .AddLogging()
+                .AddSingleton<ISortingService, SortingService>()
+                .AddSingleton<IIOService, IOService>()
+                .BuildServiceProvider();
 
-            using (var serviceScope = host.Services.CreateScope())
+            // Sort names and print results
+            Console.WriteLine("Sorting names....");
+            var sortingService = serviceProvider.GetService<ISortingService>();
+            string[] result = sortingService.SortByLastName(filePath);
+            Console.WriteLine("Result:");
+            foreach (string name in result)
             {
-                var services = serviceScope.ServiceProvider;
-
-                try
-                {
-                    // Get the input service
-                    var inputService = services.GetRequiredService<IInputService>();
-                    Console.WriteLine($"Reading file {filePath}");
-                    string[] nameFile = inputService.ReadFromTextFile(filePath);
-
-
-                    // Get Sorting service
-                    var sortingService = services.GetRequiredService<ISortingService>();
-                    Console.WriteLine("Sorting names....");
-                    string[] result = sortingService.SortByLastName(nameFile);
-                    Console.WriteLine("Result:");
-                    foreach (string name in result)
-                    {
-                        Console.WriteLine(name);
-                    }
-                }
-                catch(Exception e)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(e, "An error occured.");
-                }
-
-
+                Console.WriteLine(name);
             }
-
 
             // Return 0 if the code is successful. 
             // Return 1 if the the argument is invalid. 
             return 0;
         }
 
-        public static IHostBuilder CreateHostBuilder() =>
-            Host.CreateDefaultBuilder()
-            .ConfigureServices((context, services) =>
-            {
-                // Inject depedency
-                services.AddTransient<IInputService, InputService>();
-                services.AddTransient<ISortingService, SortingService>();
-            });
 
     }
 }

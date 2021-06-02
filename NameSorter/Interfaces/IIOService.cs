@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace NameSorter
 {
-    interface IInputService
+    interface IIOService
     {
         string[] ReadFromTextFile(string path);
+        bool WriteToTextFile(string path, string[] content);
     }
 }

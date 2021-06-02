@@ -8,6 +8,6 @@ namespace NameSorter
 {
     interface ISortingService
     {
-        string[] SortByLastName(string[] nameList);
+        string[] SortByLastName(string path);
     }
 }
