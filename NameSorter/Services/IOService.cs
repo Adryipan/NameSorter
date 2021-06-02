@@ -1,11 +1,18 @@
 ﻿using System;
 using System.IO;
-
+using Microsoft.Extensions.Logging;
 
 namespace NameSorter
 {
     class IOService : IIOService
     {
+        private readonly ILogger<IOService> _logger;
+
+        public IOService(ILogger<IOService> logger)
+        {
+            _logger = logger;
+        }
+
         /// <summary>
         /// Open and read in the specified file
         /// </summary>
@@ -16,10 +23,11 @@ namespace NameSorter
             return File.ReadAllLines(path);
         }
 
-        public bool WriteToTextFile(string path, string[] content)
+        public void WriteToTextFile(string fileName, string[] content)
         {
-
-            return true;
+            var savePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+            File.WriteAllLines(savePath, content);
+            _logger.LogInformation("Saved to location {fileLocation}", savePath);
         }
     }
 }

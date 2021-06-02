@@ -5,16 +5,16 @@ namespace NameSorter
 {
     class SortingService : ISortingService
     {
-        private readonly IIOService _inputService;
+        private readonly IIOService _ioService;
 
-        public SortingService(IIOService inputService)
+        public SortingService(IIOService ioService)
         {
-            _inputService = inputService;
+            _ioService = ioService;
         }
         public string[] SortByLastName(string path)
         {
             //Retrieve data for sorting
-            var nameList = _inputService.ReadFromTextFile(path);
+            var nameList = _ioService.ReadFromTextFile(path);
 
             // Rearrange the name to put the last name to the start of the name
             for (int i = 0; i < nameList.Length; i++)
@@ -29,6 +29,8 @@ namespace NameSorter
             {
                 nameList[i] = RearrangeLastName(nameList[i], 0);
             }
+
+            _ioService.WriteToTextFile("sorted-names-list.txt", nameList);           
 
             return nameList;
         }

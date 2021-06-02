@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace NameSorter
@@ -10,8 +9,20 @@ namespace NameSorter
     {
         static int Main(string[] args)
         {
+            // Setup dependencies and logger
+            var serviceProvider = new ServiceCollection()
+                .AddLogging(configure => configure.AddConsole())
+                .Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Information)
+                .AddSingleton<ISortingService, SortingService>()
+                .AddSingleton<IIOService, IOService>()
+                .BuildServiceProvider();
+
+            var logger = serviceProvider.GetService<ILogger<Program>>();
+
+            logger.LogInformation("Application starting.....");
+            logger.LogInformation("{numArgs} of argument(s) found.", args.Length);
             // Check if one and only one argument is provided. Exit the program if not.
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
                 Console.WriteLine("Please provide a file as an argument.");
                 return 1;
@@ -24,18 +35,13 @@ namespace NameSorter
 
             // Check if the file exist
             string filePath = args[0];
+            logger.LogInformation("Attempting to check {inputPath}", filePath);
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("File does not exist.");
                 return 1;
             }
 
-            // Setup dependencies
-            var serviceProvider = new ServiceCollection()
-                .AddLogging()
-                .AddSingleton<ISortingService, SortingService>()
-                .AddSingleton<IIOService, IOService>()
-                .BuildServiceProvider();
 
             // Sort names and print results
             Console.WriteLine("Sorting names....");
@@ -51,7 +57,5 @@ namespace NameSorter
             // Return 1 if the the argument is invalid. 
             return 0;
         }
-
-
     }
 }

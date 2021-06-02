@@ -9,6 +9,6 @@ namespace NameSorter
     interface IIOService
     {
         string[] ReadFromTextFile(string path);
-        bool WriteToTextFile(string path, string[] content);
+        void WriteToTextFile(string fileName, string[] content);
     }
 }
