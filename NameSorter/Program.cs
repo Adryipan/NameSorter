@@ -46,7 +46,7 @@ namespace NameSorter
             // Sort names and print results
             Console.WriteLine("Sorting names....");
             var sortingService = serviceProvider.GetService<ISortingService>();
-            string[] result = sortingService.SortByLastName(filePath);
+            string[] result = sortingService.SortByLastName(filePath, "sorted-names-list.txt");
             Console.WriteLine("Result:");
             foreach (string name in result)
             {

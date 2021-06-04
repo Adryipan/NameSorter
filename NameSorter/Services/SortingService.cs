@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace NameSorter
 {
-    class SortingService : ISortingService
+    public class SortingService : ISortingService
     {
         private readonly IIOService _ioService;
 
@@ -11,12 +11,12 @@ namespace NameSorter
         {
             _ioService = ioService;
         }
-        public string[] SortByLastName(string path)
+        public string[] SortByLastName(string path, string outputFileName)
         {
             //Retrieve data for sorting
             var nameList = _ioService.ReadFromTextFile(path);
 
-            // Rearrange the name to put the last name to the start of the name
+            //Rearrange the name to put the last name to the start of the name
             for (int i = 0; i < nameList.Length; i++)
             {
                 nameList[i] = RearrangeLastName(nameList[i], -1);
@@ -24,13 +24,14 @@ namespace NameSorter
                 
             Array.Sort(nameList);
 
-            // Revert the name
+            //Revert the name
             for (int i = 0; i < nameList.Length; i++)
             {
                 nameList[i] = RearrangeLastName(nameList[i], 0);
             }
 
-            _ioService.WriteToTextFile("sorted-names-list.txt", nameList);           
+            //Write to file
+            _ioService.WriteToTextFile(outputFileName, nameList);           
 
             return nameList;
         }

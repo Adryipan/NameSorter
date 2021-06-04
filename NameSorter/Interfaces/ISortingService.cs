@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace NameSorter
 {
-    interface ISortingService
+    public interface ISortingService
     {
-        string[] SortByLastName(string path);
+        string[] SortByLastName(string path, string outputFileName);
     }
 }
