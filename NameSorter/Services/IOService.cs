@@ -35,8 +35,7 @@ namespace NameSorter
             {
                 _logger.LogError("Failed to save file to {fileLocation} with exception " + e, savePath);
             }
-            
-            
+                    
         }
     }
 }
