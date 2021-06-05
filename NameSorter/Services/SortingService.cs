@@ -11,6 +11,7 @@ namespace NameSorter
         {
             _ioService = ioService;
         }
+
         public string[] SortByLastName(string path, string outputFileName)
         {
             //Retrieve data for sorting
@@ -36,6 +37,13 @@ namespace NameSorter
             return nameList;
         }
 
+        /// <summary>
+        /// This method accept a string of name and rearrange its lastname 
+        /// to either the start or the end of the name.
+        /// </summary>
+        /// <param name="name">The name to be processed</param>
+        /// <param name="lastNameIndex">The index of last name in name</param>
+        /// <returns>A string of the processed name</returns>
         private string RearrangeLastName(string name, int lastNameIndex)
         {
             //Split the name into names
@@ -55,7 +63,6 @@ namespace NameSorter
                 splittedName.Add(lastName);
             }
             
-
             return String.Join(" ", splittedName.ToArray());
         }
     }

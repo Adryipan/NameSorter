@@ -19,8 +19,6 @@ namespace NameSorter
 
             var logger = serviceProvider.GetService<ILogger<Program>>();
 
-            logger.LogInformation("Application starting.....");
-            logger.LogInformation("{numArgs} of argument(s) found.", args.Length);
             // Check if one and only one argument is provided. Exit the program if not.
             if (args.Length == 0)
             {
@@ -35,7 +33,6 @@ namespace NameSorter
 
             // Check if the file exist
             string filePath = args[0];
-            logger.LogInformation("Attempting to check {inputPath}", filePath);
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("File does not exist.");
